@@ -1,24 +1,24 @@
-package coffee
+package cafe
 
 import (
 	"testing"
 
-	"github.com/justinljg/coffee-shop/coffee"
+	"github.com/justinljg/coffee-shop/cafe"
 )
 
 func TestCoffeeTypeToString(t *testing.T) {
 	tests := []struct {
-		coffeeType coffee.CoffeeType
+		coffeeType cafe.CoffeeType
 		expected   string
 	}{
-		{coffee.Espresso, "Espresso"},
-		{coffee.Latte, "Latte"},
-		{coffee.Cappuccino, "Cappuccino"},
-		{coffee.CoffeeType(100), "Unknown"},
+		{cafe.Espresso, "Espresso"},
+		{cafe.Latte, "Latte"},
+		{cafe.Cappuccino, "Cappuccino"},
+		{cafe.CoffeeType(100), "Unknown"},
 	}
 
 	for _, tt := range tests {
-		result := coffee.CoffeeTypeToString(tt.coffeeType)
+		result := cafe.CoffeeTypeToString(tt.coffeeType)
 		if result != tt.expected {
 			t.Errorf("Expected %s, got %s", tt.expected, result)
 		}

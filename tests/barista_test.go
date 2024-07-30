@@ -1,19 +1,19 @@
-package coffee
+package cafe
 
 import (
 	"sync"
 	"testing"
 	"time"
 
-	"github.com/justinljg/coffee-shop/coffee"
+	"github.com/justinljg/coffee-shop/cafe"
 )
 
 func TestBaristaPrepareOrder(t *testing.T) {
-	orders := make(chan coffee.Order, 100)
+	orders := make(chan cafe.Order, 100)
 	wg := sync.WaitGroup{}
 
-	barista := coffee.Barista{Id: 1}
-	order := coffee.Order{CustomerID: 1, CoffeeType: coffee.Espresso}
+	barista := cafe.Barista{ID: 1}
+	order := cafe.Order{CustomerID: 1, CoffeeType: cafe.Espresso}
 
 	wg.Add(1)
 	startTime := time.Now()
@@ -21,8 +21,8 @@ func TestBaristaPrepareOrder(t *testing.T) {
 	wg.Wait()
 
 	duration := time.Since(startTime)
-	if duration < coffee.CoffeePreparationTimes[coffee.Espresso] {
-		t.Errorf("Expected at least %v for preparation, got %v", coffee.CoffeePreparationTimes[coffee.Espresso], duration)
+	if duration < cafe.CoffeePreparationTimes[cafe.Espresso] {
+		t.Errorf("Expected at least %v for preparation, got %v", cafe.CoffeePreparationTimes[cafe.Espresso], duration)
 	}
 
 	select {

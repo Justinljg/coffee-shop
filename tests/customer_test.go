@@ -1,19 +1,19 @@
-package coffee
+package cafe
 
 import (
 	"sync"
 	"testing"
 	"time"
 
-	"github.com/justinljg/coffee-shop/coffee"
+	"github.com/justinljg/coffee-shop/cafe"
 )
 
 func TestSimulateCustomerArrivals(t *testing.T) {
-	customers := make(chan coffee.Customer, 100)
+	customers := make(chan cafe.Customer, 100)
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 
-	go coffee.SimulateCustomerArrivals(customers, &wg)
+	go cafe.SimulateCustomerArrivals(customers, &wg)
 
 	time.Sleep(5 * time.Second) // Allow some time for customers to be added
 

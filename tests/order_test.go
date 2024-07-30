@@ -1,16 +1,16 @@
-package coffee
+package cafe
 
 import (
 	"testing"
 
-	"github.com/justinljg/coffee-shop/coffee"
+	"github.com/justinljg/coffee-shop/cafe"
 )
 
 func TestOrderCreation(t *testing.T) {
 	customerID := 1
-	coffeeType := coffee.Latte
+	coffeeType := cafe.Latte
 
-	order := coffee.Order{CustomerID: customerID, CoffeeType: coffeeType}
+	order := cafe.Order{CustomerID: customerID, CoffeeType: coffeeType}
 
 	if order.CustomerID != customerID {
 		t.Errorf("Expected customer ID %d, got %d", customerID, order.CustomerID)
