@@ -72,7 +72,7 @@ jobs:
       run: go mod tidy
       
     - name: Run linting script
-      run: ./lint.sh
+      run: sh ./lint.sh
 
     - name: Run lint
       run: |
