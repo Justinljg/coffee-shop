@@ -74,7 +74,7 @@ jobs:
     - name: Run linting script
       run: ./lint.sh
 
-    - name: Run lint
+    - name: Run lint checks
       run: |
         golint ./...
         staticcheck ./...
