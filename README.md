@@ -62,7 +62,8 @@ This Project includes a go files to mimic customers and baristas.
 `GO`
 
 
-![image](https://github.com/user-attachments/assets/52161c8d-45f4-4f54-980d-804af49a630e)
+![image](https://github.com/user-attachments/assets/c2775a5d-dbfc-4b8b-8872-a99ffa11a9ce)
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
