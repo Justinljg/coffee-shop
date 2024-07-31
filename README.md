@@ -127,19 +127,19 @@ Alternatively you can just run the go file.
 ### Main
 
 <h4>Key Components</h4>
-<br>
+
 - Random Number Generator:
 
   Initializes a random number generator to create random coffee orders.
       
-    rng := rand.New(rand.NewSource(time.Now().UnixNano()))
-</br>
+      rng := rand.New(rand.NewSource(time.Now().UnixNano()))
+    
 - Channels:
 
   These channels are used for customer arrivals and order handling. They are buffered channels with a capacity of 10.
 
-    customers := make(chan cafe.Customer, 10)
-    orders := make(chan cafe.Order, 10)
+      customers := make(chan cafe.Customer, 10)
+      orders := make(chan cafe.Order, 10)
 
 - WaitGroup:
   A WaitGroup is used to wait for the goroutines to finish their work before shutting down the program.
@@ -180,23 +180,23 @@ Each barista listens on the customers channel for incoming customers, creates an
   After all customers are processed, the orders channel is closed, and any remaining orders are processed and printed.
 
 ### barista.go
-This file contains structs needed and a PrepareOrder function.
-
-The Barista struct represents a barista with an ID who prepares coffee orders.
-
-The PrepareOrder method simulates a barista preparing a coffee order. It logs the start and end of the preparation, simulates the preparation time, and sends the completed order to the provided channel. 
+  This file contains structs needed and a PrepareOrder function.
+  
+  The Barista struct represents a barista with an ID who prepares coffee orders.
+  
+  The PrepareOrder method simulates a barista preparing a coffee order. It logs the start and end of the preparation, simulates the preparation time, and sends the completed order to the provided channel. 
         
 ### coffee.go
-This file contains structs for the type of coffee, the time needed for each coffee and the type of coffee to string. The type of coffee is simplified by enumeration through ioata.
+  This file contains structs for the type of coffee, the time needed for each coffee and the type of coffee to string. The type of coffee is simplified by enumeration through ioata.
 
 ### customer.go
 
-This file contains structs for customer with an ID and the SimulateCustomerArrivals function.
-
-The SimulateCustomerArrivals function continuously generates customer arrivals and sends them to the customers channel. This function runs in a separate goroutine and increments the customer ID for each new customer. The function continues to run until the parent goroutine signals completion by closing the channel.
+  This file contains structs for customer with an ID and the SimulateCustomerArrivals function.
+  
+  The SimulateCustomerArrivals function continuously generates customer arrivals and sends them to the customers channel. This function runs in a separate goroutine and increments the customer ID for each new customer. The function continues to run until the parent goroutine signals completion by closing the channel.
 
 ### customer.go
 
-This file contains struct for the customer id and the coffee type.
+  This file contains struct for the customer id and the coffee type.
 
 
