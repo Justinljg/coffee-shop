@@ -9,7 +9,7 @@ import (
 )
 
 func TestBaristaPrepareOrder(t *testing.T) {
-	orders := make(chan cafe.Order, 100)
+	orders := make(chan cafe.Order, 10)
 	wg := sync.WaitGroup{}
 
 	barista := cafe.Barista{ID: 1}

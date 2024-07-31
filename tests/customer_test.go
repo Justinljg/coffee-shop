@@ -9,7 +9,7 @@ import (
 )
 
 func TestSimulateCustomerArrivals(t *testing.T) {
-	customers := make(chan cafe.Customer, 100)
+	customers := make(chan cafe.Customer, 10)
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 
