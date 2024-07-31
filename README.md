@@ -6,7 +6,7 @@
   
   This project simulates a simple coffee shop operation where customers arrive, place orders, and baristas prepare and serve the orders. 
     <br />
-    <a href="https://github.com/Justinljg/SupersetK8s/"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/Justinljg/cofee-shop"><strong>Explore the docs »</strong></a>
 
 </div>
 
