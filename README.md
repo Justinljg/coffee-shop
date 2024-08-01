@@ -31,11 +31,11 @@
     <li>
       <a href="#summary-of-repository">Summary of Repository</a>
       <ul>
-        <li><a href="#main.go">main.go</a></li>
-        <li><a href="#barista.go">barista.go</a></li>
-        <li><a href="#coffee.go">coffee.go</a></li>
-        <li><a href="#customer.go">customer.go</a></li>
-        <li><a href="#order.go">order.go</a></li>
+        <li><a href="#main">main</a></li>
+        <li><a href="#barista">barista</a></li>
+        <li><a href="#coffee">coffee.go</a></li>
+        <li><a href="#customer">customer</a></li>
+        <li><a href="#order">order</a></li>
       </ul>
     </li>
   </ol>
@@ -123,23 +123,23 @@ Alternatively you can just run the go file.
     go run main.go
 ## Summary of Repository
 
-### main.go
+### main
 
 To be developed.
 
-### barista.go
+### barista
 
 To be developed.
 
-### coffee.go
+### coffee
 
 To be developed.
 
-### customer.go
+### customer
 
 To be developed.
 
-### order.go
+### order
 
 
 
