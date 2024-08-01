@@ -10,8 +10,6 @@
 
 </div>
 
-
-
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -27,26 +25,27 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#working-tree">Working Tree</a></li>
-        <li><a href="#running-the-repository-&-testing">Running the repository & Testing</a></li>
+        <li><a href="#running-the-repository--testing">Running the Repository & Testing</a></li>
       </ul>
     </li>
     <li>
-      <a href="#summary-of-repository">Summary of Repository</a></li>
-        <ul>
-        <li><a href="#main">Main</a></li>
-        <li><a href="#sqlc">SQLC</a></li>
-        <li><a href="#routes">Routes</a></li>
-        <li><a href="#handlers">Handlers</a></li>
+      <a href="#summary-of-repository">Summary of Repository</a>
+      <ul>
+        <li><a href="#main.go">main.go</a></li>
+        <li><a href="#barista.go">barista.go</a></li>
+        <li><a href="#coffee.go">coffee.go</a></li>
+        <li><a href="#customer.go">customer.go</a></li>
+        <li><a href="#order.go">order.go</a></li>
       </ul>
+    </li>
   </ol>
 </details>
-
 
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-`https://https://github.com/Justinljg/go-assignment`
+`https://https://github.com/Justinljg/coffee-shop`
 
 This Project includes go files to mimic customers and baristas.
 
@@ -124,79 +123,15 @@ Alternatively you can just run the go file.
     go run main.go
 ## Summary of Repository
 
-### Main
-
-<h4>Key Components</h4>
-
-- Random Number Generator:
-
-  Initializes a random number generator to create random coffee orders.
-      
-      rng := rand.New(rand.NewSource(time.Now().UnixNano()))
-    
-- Channels:
-
-  These channels are used for customer arrivals and order handling. They are buffered channels with a capacity of 10.
-
-      customers := make(chan cafe.Customer, 10)
-      orders := make(chan cafe.Order, 10)
-
-- WaitGroup:
-  A WaitGroup is used to wait for the goroutines to finish their work before shutting down the program.
-
-      var wg sync.WaitGroup
-
-- Signal Handling:
-  This creates a stop signal ctr+c from os to stop the customers.
-
-      stop := make(chan os.Signal, 1)
-      signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
-
-- Customer Arrivals:
-  A goroutine simulates customer arrivals by sending cafe.Customer objects to the customers channel. The WaitGroup is incremented to track this goroutine.
-
-      go cafe.SimulateCustomerArrivals(customers, &wg)
-
-- Order Handling by Baristas:
-
-  For each barista in the baristas slice, a goroutine is started to handle customer orders:
-
-      go func(b cafe.Barista) {
-        for customer := range customers {
-          order := cafe.Order{CustomerID: customer.ID, CoffeeType: cafe.CoffeeType(rng.Intn(3))}
-          fmt.Printf("Customer %d arrives and places an order for a %s.\n", customer.ID, cafe.CoffeeTypeToString(order.CoffeeType))
-          wg.Add(1)
-          go b.PrepareOrder(order, orders, &wg)
-        }
-        wg.Done()
-      }(barista)
-
-Each barista listens on the customers channel for incoming customers, creates an order, and starts a new goroutine to prepare the order. The WaitGroup is incremented to track these order preparation goroutines.
-
-- Graceful Shutdown:
-
-  The program waits for a stop signal (<-stop).
-  On receiving the stop signal, it closes the customers channel and waits for all goroutines to complete (wg.Wait()).
-  After all customers are processed, the orders channel is closed, and any remaining orders are processed and printed.
+### main.go
 
 ### barista.go
-  This file contains structs needed and a PrepareOrder function.
-  
-  The Barista struct represents a barista with an ID who prepares coffee orders.
-  
-  The PrepareOrder method simulates a barista preparing a coffee order. It logs the start and end of the preparation, simulates the preparation time, and sends the completed order to the provided channel. 
-        
+
 ### coffee.go
-  This file contains structs for the type of coffee, the time needed for each coffee and the type of coffee to string. The type of coffee is simplified by enumeration through ioata.
 
 ### customer.go
 
-  This file contains structs for customer with an ID and the SimulateCustomerArrivals function.
-  
-  The SimulateCustomerArrivals function continuously generates customer arrivals and sends them to the customers channel. This function runs in a separate goroutine and increments the customer ID for each new customer. The function continues to run until the parent goroutine signals completion by closing the channel.
+### order.go
 
-### customer.go
-
-  This file contains struct for the customer id and the coffee type.
 
 
