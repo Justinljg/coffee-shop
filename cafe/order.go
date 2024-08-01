@@ -1,7 +1,8 @@
 package cafe
 
-// Order represents a coffee order placed by a customer.
+// Order represents an order placed by a customer.
 type Order struct {
-	CustomerID int        // ID of the customer who placed the order
-	CoffeeType CoffeeType // Type of coffee ordered
+	CustomerID int
+	CoffeeType CoffeeType
+	Complete   chan Order
 }
