@@ -25,7 +25,7 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#working-tree">Working Tree</a></li>
-        <li><a href="#running-the-repository--testing">Running the Repository & Testing</a></li>
+        <li><a href="#containerising-and-running">Containerising and running</a></li>
       </ul>
     </li>
     <li>
@@ -125,11 +125,19 @@ Alternatively you can just run the go file.
 
 ### main.go
 
+To be developed.
+
 ### barista.go
+
+To be developed.
 
 ### coffee.go
 
+To be developed.
+
 ### customer.go
+
+To be developed.
 
 ### order.go
 
