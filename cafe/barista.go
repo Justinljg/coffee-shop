@@ -1,8 +1,7 @@
 package cafe
 
 import (
-	"fmt"
-	"sync"
+	"fmt"	
 	"time"
 )
 
@@ -14,11 +13,7 @@ type Barista struct {
 // PrepareOrder simulates a barista preparing a coffee order.
 // It logs the start and end of the preparation, simulates the preparation time,
 // and sends the completed order to the provided channel.
-func (barista *Barista) PrepareOrder(order Order, orders chan<- Order, wg *sync.WaitGroup) {
-	// Defer the call to wg.Done() to ensure it's executed when this method returns,
-	// indicating that the barista has finished preparing the order.
-	defer wg.Done()
-
+func (barista *Barista) PrepareOrder(order Order, orders chan<- Order) {
 	// Log the start of the preparation process.
 	// Print the barista's ID, the type of coffee being prepared, and the customer ID.
 	fmt.Printf("Barista %d starts preparing %s for Customer %d.\n", barista.ID, CoffeeTypeToString(order.CoffeeType), order.CustomerID)
