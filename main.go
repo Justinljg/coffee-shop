@@ -38,7 +38,7 @@ func main() {
 			rng := rand.New(rand.NewSource(time.Now().UnixNano() + int64(b.ID)))
 			for customer := range customers {
 				order := cafe.Order{CustomerID: customer.ID, CoffeeType: cafe.CoffeeType(rng.Intn(3))}
-				fmt.Printf("Customer %d arrives and places an order for a %s.\n", customer.ID, cafe.CoffeeTypeToString(order.CoffeeType))				
+				fmt.Printf("Customer %d arrives and places an order for a %s.\n", customer.ID, cafe.CoffeeTypeToString(order.CoffeeType))
 				// prepare order and send completed orders to orders channel
 				b.PrepareOrder(order, orders)
 			}

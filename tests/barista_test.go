@@ -1,9 +1,9 @@
 package cafe
 
 import (
+	"sync"
 	"testing"
 	"time"
-	"sync"
 
 	"github.com/justinljg/coffee-shop/cafe"
 )

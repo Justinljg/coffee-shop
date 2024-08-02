@@ -3,6 +3,7 @@ package cafe
 import (
 	"testing"
 	"time"
+
 	"github.com/justinljg/coffee-shop/cafe"
 )
 

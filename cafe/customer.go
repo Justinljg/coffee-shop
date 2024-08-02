@@ -1,8 +1,8 @@
 package cafe
 
 import (
-	"time"
 	"math/rand"
+	"time"
 )
 
 // Customer represents a customer with a unique ID.
@@ -14,7 +14,6 @@ type Customer struct {
 // This function runs until the parent goroutine signals completion by closing the channel.
 // It increments the customer ID for each new customer.
 func SimulateCustomerArrivals(customers chan<- Customer, numCustomers int) {
-
 	for i := 1; i <= numCustomers; i++ {
 		time.Sleep(time.Duration(rand.Intn(3)) * time.Second)
 		customers <- Customer{ID: i}

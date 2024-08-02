@@ -1,7 +1,7 @@
 package cafe
 
 import (
-	"fmt"	
+	"fmt"
 	"time"
 )
 
