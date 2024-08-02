@@ -10,55 +10,51 @@ import (
 )
 
 func main() {
-    rng := rand.New(rand.NewSource(time.Now().UnixNano()))
+	// make the channels
+	customers := make(chan cafe.Customer, 10)
+	orders := make(chan cafe.Order, 10)
+	baristas := []cafe.Barista{{ID: 1}, {ID: 2}}
 
-    customers := make(chan cafe.Customer, 10)
-    orders := make(chan cafe.Order, 10)
-    collected := make(chan cafe.Order, 10)
-    baristas := []cafe.Barista{{ID: 1}, {ID: 2}}
-    var wg sync.WaitGroup
+	// create waitgroup
+	var wg sync.WaitGroup
 
-    numCustomers := 10
+	// set number of customers to 100
+	numCustomers := 100
 
-    wg.Add(1)
-    go func() {
-        defer wg.Done()
-        cafe.SimulateCustomerArrivals(customers, numCustomers, &wg)
-    }()
+	// Simulate customer arrivals
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		cafe.SimulateCustomerArrivals(customers, numCustomers)
+		close(customers)
+	}()
 
-    for _, barista := range baristas {
-        wg.Add(1)
-        go func(b cafe.Barista) {
-            defer wg.Done()
-            for customer := range customers {
-                order := cafe.Order{CustomerID: customer.ID, CoffeeType: cafe.CoffeeType(rng.Intn(3))}
-                fmt.Printf("Customer %d arrives and places an order for a %s.\n", customer.ID, cafe.CoffeeTypeToString(order.CoffeeType))
-                wg.Add(1)
-                go b.PrepareOrder(order, orders, &wg)
-            }
-        }(barista)
-    }
+	// Barista to prepare orders for loop as two baristas
+	for _, barista := range baristas {
+		wg.Add(1)
+		go func(b cafe.Barista) {
+			defer wg.Done()
+			// Each barista has its own rand.Rand instance to prevent data race.
+			rng := rand.New(rand.NewSource(time.Now().UnixNano() + int64(b.ID)))
+			for customer := range customers {
+				order := cafe.Order{CustomerID: customer.ID, CoffeeType: cafe.CoffeeType(rng.Intn(3))}
+				fmt.Printf("Customer %d arrives and places an order for a %s.\n", customer.ID, cafe.CoffeeTypeToString(order.CoffeeType))				
+				// prepare order and send completed orders to orders channel
+				b.PrepareOrder(order, orders)
+			}
+		}(barista)
+	}
 
-    wg.Add(1)
-    go func() {
-        defer wg.Done()
-        for order := range orders {
-            wg.Add(1)
-            customer := cafe.Customer{ID: order.CustomerID}
-            go customer.CollectDrink(order, orders, collected, &wg)
-        }
-        close(collected)
-    }()
+	// Close the orders channel once all orders are prepared
+	go func() {
+		wg.Wait()
+		close(orders)
+	}()
 
-    go func() {
-        for completedOrder := range collected {
-            fmt.Printf("Completed order for Customer %d\n", completedOrder.CustomerID)
-        }
-    }()
+	// Customer collects their orders from the orders channel
+	for order := range orders {
+		fmt.Printf("Customer %d receives their %s and leaves.\n", order.CustomerID, cafe.CoffeeTypeToString(order.CoffeeType))
+	}
 
-    wg.Wait()
-    close(customers)
-    close(orders)
-
-    fmt.Println("Coffee shop closed.")
+	fmt.Println("Coffee shop closed.")
 }
