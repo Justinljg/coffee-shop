@@ -82,11 +82,11 @@ jobs:
 
     - name: Run tests
       run: |
-        go test -v ./... || true
+        go test -race -v ./... || true
 
     - name: Run tests with coverage
       run: |
-        go test -coverprofile=coverage.out ./... || true
+        go test -race -coverprofile=coverage.out ./... || true
 
     - name: Create output directory
       run: mkdir -p output/test
