@@ -7,6 +7,8 @@ import (
 	"github.com/justinljg/coffee-shop/cafe"
 )
 
+// This is a unit test. Unit tests should belong in the same package as the code.
+// coffee_test.go should be in the same folder as coffee.go.
 func TestCoffeeTypeToString(t *testing.T) {
 	tests := []struct {
 		coffeeType cafe.CoffeeType
@@ -26,6 +28,7 @@ func TestCoffeeTypeToString(t *testing.T) {
 	}
 }
 
+// This is a unit test. Unit tests should belong in the same package as the code.
 func TestCoffeePreparationTimes(t *testing.T) {
 	tests := []struct {
 		coffeeType cafe.CoffeeType

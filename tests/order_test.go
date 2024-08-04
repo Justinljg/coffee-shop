@@ -7,6 +7,7 @@ import (
 	"github.com/justinljg/coffee-shop/cafe"
 )
 
+// Not sure what is this for. order.Complete is not used in the main simulation code path in main.go.
 func TestOrderChannel(t *testing.T) {
 	// Create an order with a buffered channel
 	orderComplete := make(chan cafe.Order, 1)
