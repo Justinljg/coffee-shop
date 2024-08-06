@@ -77,7 +77,7 @@ Change the current working directory to the location where you want the cloned d
 
 Type git clone, and then paste the URL you copied earlier.
 
-    $ git clone https://github.com/Justinljg/go-assignment
+    $ git clone https://github.com/Justinljg/coffee-shop
 
 More specific instructions can be seen in https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository if needed.
 

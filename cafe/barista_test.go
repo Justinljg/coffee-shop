@@ -3,23 +3,21 @@ package cafe
 import (
 	"testing"
 	"time"
-
-	"github.com/justinljg/coffee-shop/cafe"
 )
 
 // This is a unit test. Unit tests should belong in the same package as the code.
 func TestPrepareOrder(t *testing.T) {
 	// Create a barista and an order
-	barista := cafe.Barista{ID: 1}
-	order := cafe.Order{
+	barista := Barista{ID: 1}
+	order := Order{
 		CustomerID: 1,
-		CoffeeType: cafe.Espresso, // Use a valid CoffeeType constant
+		CoffeeType: Espresso, // Use a valid CoffeeType constant
 	}
 
 	// Create a channel to receive the order
 	// TODO: improve naming of channel.
 	// Can be clearer if this is for new orders the barista has received or completed orders.
-	orders := make(chan cafe.Order)
+	orders := make(chan Order)
 
 	// Run PrepareOrder in a separate goroutine
 	go func() {

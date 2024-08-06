@@ -4,24 +4,23 @@ import (
 	"testing"
 	"time"
 
-	"github.com/justinljg/coffee-shop/cafe"
 )
 
 // This is a unit test. Unit tests should belong in the same package as the code.
 // coffee_test.go should be in the same folder as coffee.go.
 func TestCoffeeTypeToString(t *testing.T) {
 	tests := []struct {
-		coffeeType cafe.CoffeeType
+		coffeeType CoffeeType
 		expected   string
 	}{
-		{cafe.Espresso, "Espresso"},
-		{cafe.Latte, "Latte"},
-		{cafe.Cappuccino, "Cappuccino"},
-		{cafe.CoffeeType(999), "Unknown"}, // Testing an undefined CoffeeType
+		{Espresso, "Espresso"},
+		{Latte, "Latte"},
+		{Cappuccino, "Cappuccino"},
+		{CoffeeType(999), "Unknown"}, // Testing an undefined CoffeeType
 	}
 
 	for _, test := range tests {
-		result := cafe.CoffeeTypeToString(test.coffeeType)
+		result := CoffeeTypeToString(test.coffeeType)
 		if result != test.expected {
 			t.Errorf("CoffeeTypeToString(%d) = %s; want %s", test.coffeeType, result, test.expected)
 		}
@@ -31,16 +30,16 @@ func TestCoffeeTypeToString(t *testing.T) {
 // This is a unit test. Unit tests should belong in the same package as the code.
 func TestCoffeePreparationTimes(t *testing.T) {
 	tests := []struct {
-		coffeeType cafe.CoffeeType
+		coffeeType CoffeeType
 		expected   time.Duration
 	}{
-		{cafe.Espresso, 2 * time.Second},
-		{cafe.Latte, 3 * time.Second},
-		{cafe.Cappuccino, 4 * time.Second},
+		{Espresso, 2 * time.Second},
+		{Latte, 3 * time.Second},
+		{Cappuccino, 4 * time.Second},
 	}
 
 	for _, test := range tests {
-		result, ok := cafe.CoffeePreparationTimes[test.coffeeType]
+		result, ok := CoffeePreparationTimes[test.coffeeType]
 		if !ok {
 			t.Errorf("CoffeePreparationTimes does not contain entry for CoffeeType %d", test.coffeeType)
 			continue

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"math/rand"
 	"sync"
@@ -10,16 +11,17 @@ import (
 )
 
 func main() {
-	// make the channels
+	var numCustomers int
+	flag.IntVar(&numCustomers, "numCustomers", 100, "Number of customers to simulate")
+	flag.Parse()
+
+	// Make the channels
 	customers := make(chan cafe.Customer, 10)
 	orders := make(chan cafe.Order, 10)
 	baristas := []cafe.Barista{{ID: 1}, {ID: 2}}
 
-	// create waitgroup
+	// Create waitgroup
 	var wg sync.WaitGroup
-
-	// set number of customers to 100
-	numCustomers := 100
 
 	// Simulate customer arrivals
 	wg.Add(1)
@@ -39,7 +41,7 @@ func main() {
 			for customer := range customers {
 				order := cafe.Order{CustomerID: customer.ID, CoffeeType: cafe.CoffeeType(rng.Intn(3))}
 				fmt.Printf("Customer %d arrives and places an order for a %s.\n", customer.ID, cafe.CoffeeTypeToString(order.CoffeeType))
-				// prepare order and send completed orders to orders channel
+				// Prepare order and send completed orders to orders channel
 				b.PrepareOrder(order, orders)
 			}
 		}(barista)

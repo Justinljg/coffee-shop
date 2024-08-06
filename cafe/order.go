@@ -4,5 +4,4 @@ package cafe
 type Order struct {
 	CustomerID int
 	CoffeeType CoffeeType
-	Complete   chan Order
 }

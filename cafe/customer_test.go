@@ -1,16 +1,15 @@
 package cafe
 
 import (
-	"github.com/justinljg/coffee-shop/cafe"
 	"testing"
 )
 
 func TestSimulateCustomerArrivals(t *testing.T) {
 	numCustomers := 10
-	customers := make(chan cafe.Customer, numCustomers)
+	customers := make(chan Customer, numCustomers)
 
 	go func() {
-		cafe.SimulateCustomerArrivals(customers, numCustomers)
+		SimulateCustomerArrivals(customers, numCustomers)
 		close(customers)
 	}()
 
