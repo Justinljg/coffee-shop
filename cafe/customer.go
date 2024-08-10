@@ -1,6 +1,7 @@
 package cafe
 
 import (
+	"context"
 	"math/rand"
 	"time"
 )
@@ -11,11 +12,17 @@ type Customer struct {
 }
 
 // SimulateCustomerArrivals continuously generates customer arrivals and sends them to the customers channel.
-// This function runs until the parent goroutine signals completion by closing the channel.
+// This function runs until the context is cancelled or the parent goroutine signals completion by closing the channel.
 // It increments the customer ID for each new customer.
-func SimulateCustomerArrivals(customers chan<- Customer, numCustomers int) {
+func SimulateCustomerArrivals(ctx context.Context, customers chan<- Customer, numCustomers int) {
 	for i := 1; i <= numCustomers; i++ {
-		time.Sleep(time.Duration(rand.Intn(3)) * time.Second)
-		customers <- Customer{ID: i}
+		select {
+		case <-ctx.Done():
+			// Context was cancelled, so exit the loop
+			return
+		case <-time.After(time.Duration(rand.Intn(3)) * time.Second):
+			// Send a new customer to the channel
+			customers <- Customer{ID: i}
+		}
 	}
 }

@@ -3,7 +3,6 @@ package cafe
 import (
 	"testing"
 	"time"
-
 )
 
 // This is a unit test. Unit tests should belong in the same package as the code.

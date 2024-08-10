@@ -12,7 +12,7 @@ func TestMainIntegration(t *testing.T) {
 	numCustomers := 2
 
 	// Run the main.go file with the specified number of customers
-	cmd := exec.Command("go", "run", "-race","main.go", "-numCustomers", fmt.Sprint(numCustomers))
+	cmd := exec.Command("go", "run", "-race", "main.go", "-numCustomers", fmt.Sprint(numCustomers))
 	var out bytes.Buffer
 	cmd.Stdout = &out
 	cmd.Stderr = &out

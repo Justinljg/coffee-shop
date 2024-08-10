@@ -1,6 +1,7 @@
 package cafe
 
 import (
+	"context"
 	"testing"
 )
 
@@ -8,8 +9,11 @@ func TestSimulateCustomerArrivals(t *testing.T) {
 	numCustomers := 10
 	customers := make(chan Customer, numCustomers)
 
+	// Set up context and cancellation function
+	ctx := context.Background()
+
 	go func() {
-		SimulateCustomerArrivals(customers, numCustomers)
+		SimulateCustomerArrivals(ctx, customers, numCustomers)
 		close(customers)
 	}()
 

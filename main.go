@@ -1,10 +1,14 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"math/rand"
+	"os"
+	"os/signal"
 	"sync"
+	"syscall"
 	"time"
 
 	"github.com/justinljg/coffee-shop/cafe"
@@ -23,29 +27,34 @@ func main() {
 	// Create waitgroup
 	var wg sync.WaitGroup
 
+	// Set up context and cancellation function
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	// Simulate customer arrivals
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		cafe.SimulateCustomerArrivals(customers, numCustomers)
+		cafe.SimulateCustomerArrivals(ctx, customers, numCustomers)
+		// Close the customers channel after all customers are sent
 		close(customers)
 	}()
 
-	// Barista to prepare orders for loop as two baristas
+	// Start baristas with cancellation context
 	for _, barista := range baristas {
 		wg.Add(1)
-		go func(b cafe.Barista) {
-			defer wg.Done()
-			// Each barista has its own rand.Rand instance to prevent data race.
-			rng := rand.New(rand.NewSource(time.Now().UnixNano() + int64(b.ID)))
-			for customer := range customers {
-				order := cafe.Order{CustomerID: customer.ID, CoffeeType: cafe.CoffeeType(rng.Intn(3))}
-				fmt.Printf("Customer %d arrives and places an order for a %s.\n", customer.ID, cafe.CoffeeTypeToString(order.CoffeeType))
-				// Prepare order and send completed orders to orders channel
-				b.PrepareOrder(order, orders)
-			}
-		}(barista)
+		rng := rand.New(rand.NewSource(time.Now().UnixNano() + int64(barista.ID)))
+		go barista.ServeCustomers(ctx, customers, orders, &wg, rng)
 	}
+
+	// Goroutine to handle the signal and initiate shutdown
+	go func() {
+		signalChan := make(chan os.Signal, 1)
+		signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
+		<-signalChan
+		fmt.Println("\nInterrupt signal received. Shutting down...")
+		cancel()
+	}()
 
 	// Close the orders channel once all orders are prepared
 	go func() {
@@ -58,5 +67,6 @@ func main() {
 		fmt.Printf("Customer %d receives their %s and leaves.\n", order.CustomerID, cafe.CoffeeTypeToString(order.CoffeeType))
 	}
 
+	wg.Wait()
 	fmt.Println("Coffee shop closed.")
 }
