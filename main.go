@@ -34,6 +34,7 @@ func main() {
 	go func() {
 		defer wg.Done()
 		cafe.SimulateCustomerArrivals(ctx, customers, numCustomers)
+		close(customers)
 	}()
 
 	// Start baristas 
