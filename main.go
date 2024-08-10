@@ -4,12 +4,12 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"math/rand"
 	"os"
 	"os/signal"
 	"sync"
 	"syscall"
 	"time"
+	"math/rand"
 
 	"github.com/justinljg/coffee-shop/cafe"
 )
@@ -19,54 +19,52 @@ func main() {
 	flag.IntVar(&numCustomers, "numCustomers", 100, "Number of customers to simulate")
 	flag.Parse()
 
-	// Make the channels
 	customers := make(chan cafe.Customer, 10)
 	orders := make(chan cafe.Order, 10)
 	baristas := []cafe.Barista{{ID: 1}, {ID: 2}}
 
-	// Create waitgroup
 	var wg sync.WaitGroup
 
-	// Set up context and cancellation function
+	// Create a context that supports cancellation
 	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	defer cancel() // Ensure cancel is called to free resources
 
-	// Simulate customer arrivals
+	// Goroutine to simulate customer arrivals
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
 		cafe.SimulateCustomerArrivals(ctx, customers, numCustomers)
-		// Close the customers channel after all customers are sent
-		close(customers)
 	}()
 
-	// Start baristas with cancellation context
+	// Start baristas 
 	for _, barista := range baristas {
 		wg.Add(1)
 		rng := rand.New(rand.NewSource(time.Now().UnixNano() + int64(barista.ID)))
 		go barista.ServeCustomers(ctx, customers, orders, &wg, rng)
 	}
 
-	// Goroutine to handle the signal and initiate shutdown
+	// Goroutine to close the orders channel once all orders are processed
 	go func() {
-		signalChan := make(chan os.Signal, 1)
-		signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
+		wg.Wait() // Wait for all barista goroutines to finish
+		close(orders) // Close orders channel
+	}()
+
+	// Goroutine to handle interrupt signals
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
+
+	go func() {
 		<-signalChan
 		fmt.Println("\nInterrupt signal received. Shutting down...")
-		cancel()
+		cancel() // Signal cancellation to all goroutines
 	}()
 
-	// Close the orders channel once all orders are prepared
-	go func() {
-		wg.Wait()
-		close(orders)
-	}()
-
-	// Customer collects their orders from the orders channel
+	// Process orders
 	for order := range orders {
 		fmt.Printf("Customer %d receives their %s and leaves.\n", order.CustomerID, cafe.CoffeeTypeToString(order.CoffeeType))
 	}
 
+	// Ensure all remaining orders are processed before exiting
 	wg.Wait()
 	fmt.Println("Coffee shop closed.")
 }

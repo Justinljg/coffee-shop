@@ -25,4 +25,5 @@ func SimulateCustomerArrivals(ctx context.Context, customers chan<- Customer, nu
 			customers <- Customer{ID: i}
 		}
 	}
+	close(customers)
 }
