@@ -19,6 +19,7 @@ func SimulateCustomerArrivals(ctx context.Context, customers chan<- Customer, nu
 		select {
 		case <-ctx.Done():
 			// Context was cancelled, so exit the loop
+			close(customers)
 			return
 		case <-time.After(time.Duration(rand.Intn(3)) * time.Second):
 			// Send a new customer to the channel
