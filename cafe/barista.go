@@ -3,8 +3,7 @@ package cafe
 import (
 	"context"
 	"fmt"
-	"math/rand"
-	"sync"
+	"math/rand"	
 	"time"
 )
 
@@ -16,8 +15,8 @@ type Barista struct {
 // ServeCustomers starts serving customers.
 // It listens to the customers channel, prepares their orders,
 // and sends completed orders to the orders channel.
-func (barista *Barista) ServeCustomers(ctx context.Context, customers <-chan Customer, orders chan<- Order, wg *sync.WaitGroup, rng *rand.Rand) {
-	defer wg.Done()
+func (barista *Barista) ServeCustomers(ctx context.Context, customers <-chan Customer, orders chan<- Order) {
+	rng := rand.New(rand.NewSource(time.Now().UnixNano() + int64(barista.ID*1000)))
 	for {
 		select {
 		case customer, ok := <-customers:

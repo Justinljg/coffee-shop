@@ -8,8 +8,7 @@ import (
 	"os/signal"
 	"sync"
 	"syscall"
-	"time"
-	"math/rand"
+
 
 	"github.com/justinljg/coffee-shop/cafe"
 )
@@ -39,9 +38,9 @@ func main() {
 
 	for _, barista := range baristas {
 		wg.Add(1)
+		defer wg.Done()
 		go func(b cafe.Barista) {
-			rng := rand.New(rand.NewSource(time.Now().UnixNano() + int64(b.ID*1000)))
-			b.ServeCustomers(ctx, customers, orders, &wg, rng)
+			b.ServeCustomers(ctx, customers, orders)
 		}(barista)
 	}	
 
