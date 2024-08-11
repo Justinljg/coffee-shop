@@ -93,19 +93,19 @@ The following is the working tree of this repository.
     .
     ├── cafe
     │   ├── barista.go
+    │   ├── barista_test.go
     │   ├── coffee.go
+    │   ├── coffee_test.go
     │   ├── customer.go
-    │   └── order.go
+    │   ├── customer_test.go
+    │   ├── order.go
+    │   └── order_test.go
     ├── Dockerfile
     ├── go.mod
     ├── lint.sh
     ├── main.go
-    ├── README.md
-    └── tests
-        ├── barista_test.go
-        ├── coffee_test.go
-        ├── customer_test.go
-        └── order_test.go
+    ├── main_test.go
+    └── README.md
 
 
 ## Containerising and running
