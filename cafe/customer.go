@@ -2,9 +2,9 @@ package cafe
 
 import (
 	"context"
+	"fmt"
 	"math/rand"
 	"time"
-	"fmt"
 )
 
 // Customer represents a customer with a unique ID.
@@ -20,7 +20,7 @@ func SimulateCustomerArrivals(ctx context.Context, customers chan<- Customer, nu
 		select {
 		case <-ctx.Done():
 			return
-		case <-time.After(time.Duration(rand.Intn(3)) * time.Second):
+		case <-time.After(time.Duration(float64(time.Duration(rand.Intn(3))*time.Second) * TestSleepMultiplier)):
 			fmt.Printf("Customer %d arrives.\n", i)
 			// Send a new customer to the channel
 			customers <- Customer{ID: i}

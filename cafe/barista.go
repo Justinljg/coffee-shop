@@ -3,7 +3,7 @@ package cafe
 import (
 	"context"
 	"fmt"
-	"math/rand"	
+	"math/rand"
 	"time"
 )
 
@@ -35,11 +35,13 @@ func (barista *Barista) ServeCustomers(ctx context.Context, customers <-chan Cus
 			barista.PrepareOrder(order, orders)
 
 		case <-ctx.Done():
-			fmt.Println("Barista received cancellation signal, stopping.")
+			fmt.Printf("Barista %d received cancellation signal, stopping.\n", barista.ID)
 			return
 		}
 	}
 }
+
+var TestSleepMultiplier = 1.0
 
 // PrepareOrder simulates a barista preparing a coffee order.
 // It logs the start and end of the preparation, simulates the preparation time,
@@ -48,7 +50,8 @@ func (barista *Barista) PrepareOrder(order Order, orders chan<- Order) {
 	fmt.Printf("Barista %d starts preparing %s for Customer %d.\n", barista.ID, CoffeeTypeToString(order.CoffeeType), order.CustomerID)
 
 	// Simulate the time taken to prepare the coffee.
-	time.Sleep(CoffeePreparationTimes[order.CoffeeType])
+	delay := time.Duration(TestSleepMultiplier * float64(CoffeePreparationTimes[order.CoffeeType]))
+	time.Sleep(delay)
 
 	fmt.Printf("Barista %d finishes %s for Customer %d.\n", barista.ID, CoffeeTypeToString(order.CoffeeType), order.CustomerID)
 
