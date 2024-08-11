@@ -21,7 +21,7 @@ func (barista *Barista) ServeCustomers(ctx context.Context, customers <-chan Cus
 		select {
 		case customer, ok := <-customers:
 			if !ok {
-				// Customers channel is closed
+				//exit the loop
 				return
 			}
 			order := Order{

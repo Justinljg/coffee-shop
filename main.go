@@ -38,8 +38,8 @@ func main() {
 
 	for _, barista := range baristas {
 		wg.Add(1)
-		defer wg.Done()
 		go func(b cafe.Barista) {
+			defer wg.Done()
 			b.ServeCustomers(ctx, customers, orders)
 		}(barista)
 	}	
