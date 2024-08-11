@@ -131,9 +131,11 @@ The tests can be run through the command.
 ## Summary of Repository
 I am going to use a lot of my personal simplified terms here according to my understanding for my own reference which may differ from the standards.
 
-The code tries to run the a structure where the operations is seperate from the logic. What this means in this repository is operational stuff like {e.g. goroutines to ensure concurrency} operations is seperate from {e.g. coffetype, waiting times} logic. This allows me to run mosts test without integrations or mocks for my unit tests. This is based on this [article](https://blog.boot.dev/clean-code/writing-good-unit-tests-dont-mock-database-connections/). The context of this article is more on database connections but I felt that the practice is also applicable here. 
+The code tries to run the a structure where the operations is seperate from the logic. What this means in this repository is operational stuff like {e.g. goroutines to ensure concurrency} operations is seperate from {e.g. coffetype, waiting times} logic. This allows me to run mosts test without integrations or mocks for my tests. This is based on this [article](https://blog.boot.dev/clean-code/writing-good-unit-tests-dont-mock-database-connections/). The context of this article is more on database connections but I felt that the practice is also applicable here. 
 
 The picture below is used to depict what the setup is like.
+
+![coffee](https://github.com/user-attachments/assets/41fb5a03-4313-448d-9b3e-679e33e751fa)
 
 
 From my personal experience, it is important to take note where you implement your wait groups and where you send or close your channels. This can cause race conditions.
