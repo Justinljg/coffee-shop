@@ -4,6 +4,7 @@ import (
 	"context"
 	"math/rand"
 	"time"
+	"fmt"
 )
 
 // Customer represents a customer with a unique ID.
@@ -18,10 +19,9 @@ func SimulateCustomerArrivals(ctx context.Context, customers chan<- Customer, nu
 	for i := 1; i <= numCustomers; i++ {
 		select {
 		case <-ctx.Done():
-			// Context was cancelled, so exit the loop
-			close(customers)
 			return
 		case <-time.After(time.Duration(rand.Intn(3)) * time.Second):
+			fmt.Printf("Customer %d arrives.\n", i)
 			// Send a new customer to the channel
 			customers <- Customer{ID: i}
 		}

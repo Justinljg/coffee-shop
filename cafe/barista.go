@@ -30,7 +30,7 @@ func (barista *Barista) ServeCustomers(ctx context.Context, customers <-chan Cus
 				CoffeeType: CoffeeType(rng.Intn(3)), // Random coffee type
 			}
 
-			fmt.Printf("Customer %d arrives and places an order for a %s.\n", customer.ID, CoffeeTypeToString(order.CoffeeType))
+			fmt.Printf("Customer %d places an order for a %s.\n", customer.ID, CoffeeTypeToString(order.CoffeeType))
 
 			// Prepare the order.
 			barista.PrepareOrder(order, orders)

@@ -37,12 +37,13 @@ func main() {
 		close(customers)
 	}()
 
-	// Start baristas 
 	for _, barista := range baristas {
 		wg.Add(1)
-		rng := rand.New(rand.NewSource(time.Now().UnixNano() + int64(barista.ID)))
-		go barista.ServeCustomers(ctx, customers, orders, &wg, rng)
-	}
+		go func(b cafe.Barista) {
+			rng := rand.New(rand.NewSource(time.Now().UnixNano() + int64(b.ID*1000)))
+			b.ServeCustomers(ctx, customers, orders, &wg, rng)
+		}(barista)
+	}	
 
 	// Goroutine to close the orders channel once all orders are processed
 	go func() {
